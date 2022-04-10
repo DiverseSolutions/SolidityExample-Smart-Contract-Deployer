@@ -1,0 +1,5 @@
+[
+  "event Deployed(address)",
+  "function deploySmartContract(bytes) payable returns (address)",
+  "function executeSmartContract(address,bytes) payable"
+]
