@@ -1,19 +1,33 @@
 const { expect } = require("chai");
 const { ethers } = require("hardhat");
 
-describe("Greeter", function () {
-  it("Should return the new greeting once it's changed", async function () {
-    const Greeter = await ethers.getContractFactory("Greeter");
-    const greeter = await Greeter.deploy("Hello, world!");
-    await greeter.deployed();
+describe("Deployer Contract", function () {
 
-    expect(await greeter.greet()).to.equal("Hello, world!");
+  it("Deploy DummyContract", async function () {
+    let accounts = await ethers.getSigners();
 
-    const setGreetingTx = await greeter.setGreeting("Hola, mundo!");
+    const DeployerContract = await ethers.getContractFactory("Deployer");
+    const deployerContract = await DeployerContract.deploy();
+    await deployerContract.deployed();
 
-    // wait until the transaction is mined
-    await setGreetingTx.wait();
+    const Helper = await ethers.getContractFactory("Helper");
+    const helperContract = await Helper.deploy();
+    await helperContract.deployed();
 
-    expect(await greeter.greet()).to.equal("Hola, mundo!");
+    let contractByteCode = await helperContract.getDummyContractByteCode();
+    let resultHash = await ((await deployerContract.deploySmartContract(contractByteCode,{ value: 0 })).wait())
+
+    // Checking If Contract Is Created
+    let dummyContract = await ethers.getContractAt('DummyContract',resultHash.events[0].args[0])
+    await dummyContract.deployed();
+
+    expect(await dummyContract.owner()).to.equal(deployerContract.address);
+
+    // Setting Owner
+    let calldata = await helperContract.getDummyContractSetOwnerCallData(accounts[1].address)
+    let setOwnerResultHash = await ((await deployerContract.executeSmartContract(dummyContract.address,calldata)).wait())
+
+    expect(await dummyContract.owner()).to.equal(accounts[1].address);
   });
+
 });

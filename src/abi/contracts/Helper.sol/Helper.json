@@ -1,0 +1,5 @@
+[
+  "function getDummyContract2ByteCode(uint256,uint256) pure returns (bytes)",
+  "function getDummyContractByteCode() pure returns (bytes)",
+  "function getDummyContractSetOwnerCallData(address) pure returns (bytes)"
+]

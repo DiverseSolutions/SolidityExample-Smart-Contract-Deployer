@@ -1,0 +1,7 @@
+[
+  "constructor(uint256,uint256) payable",
+  "function owner() view returns (address)",
+  "function value() view returns (uint256)",
+  "function x() view returns (uint256)",
+  "function y() view returns (uint256)"
+]
