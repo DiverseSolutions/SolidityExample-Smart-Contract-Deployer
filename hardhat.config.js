@@ -2,6 +2,7 @@ require('dotenv').config()
 require('hardhat-abi-exporter');
 
 
+require('hardhat-docgen');
 require("@nomiclabs/hardhat-waffle");
 require("@nomiclabs/hardhat-etherscan");
 
@@ -30,6 +31,11 @@ module.exports = {
     clear: true,
     spacing: 2,
     pretty: true,
+  },
+  docgen: {
+    path: './docs',
+    clear: true,
+    runOnCompile: true,
   },
   networks: {
     ethereum: {
